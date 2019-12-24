@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright 2015 data Artisans GmbH
+ Copyright 2015 data Artisans GmbH, 2019 Ververica GmbH
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -17,21 +17,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	
-	<groupId>com.data-artisans</groupId>
+	<groupId>com.ververica</groupId>
 	<artifactId>flink-training-exercises</artifactId>
-	<version>2.6.0</version>
+	<version>2.10.0</version>
 	<packaging>jar</packaging>
 
 	<name>Apache Flink Training Exercises</name>
-	<url>dataartisans.github.io/flink-training/</url>
+	<url>https://training.ververica.com</url>
 
 	<inceptionYear>2015</inceptionYear>
-	<description>Utilities and material for Apache Flink Training, provided by data Artisans.</description>
-
-	<scm>
-		<url>https://github.com/dataArtisans/cascading-flink</url>
-		<connection>scm:git:https://github.com/dataArtisans/cascading-flink.git</connection>
-	</scm>
+	<description>Utilities and material for Apache Flink Training, provided by Ververica.</description>
 
 	<licenses>
 		<license>
@@ -43,29 +38,19 @@
 
 	<developers>
 		<developer>
-			<organization>data Artisans</organization>
-			<url>http://data-artisans.com/</url>
+			<organization>Ververica</organization>
+			<url>https://ververica.com/</url>
 		</developer>
 	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<slf4j.version>1.7.19</slf4j.version>
-		<flink.version>1.7.2</flink.version>
-		<scala.binary.version>2.11</scala.binary.version>
+		<flink.version>1.9.0</flink.version>
+		<scala.binary.version>2.12</scala.binary.version>
 		<junit.version>4.12</junit.version>
+		<assertj.version>3.11.1</assertj.version>
 	</properties>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 
 	<dependencies>
 
@@ -101,6 +86,12 @@
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-runtime-web_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.flink</groupId>
 			<artifactId>flink-cep_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
 		</dependency>
@@ -113,26 +104,15 @@
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-gelly_${scala.binary.version}</artifactId>
+			<artifactId>flink-state-processor-api_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-table_${scala.binary.version}</artifactId>
+			<artifactId>flink-table-uber_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-gelly-scala_${scala.binary.version}</artifactId>
-			<version>${flink.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-gelly-examples_${scala.binary.version}</artifactId>
-			<version>${flink.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -155,23 +135,22 @@
 
 		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-streaming-java_2.11</artifactId>
+			<artifactId>flink-test-utils_${scala.binary.version}</artifactId>
+			<version>${flink.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.flink</groupId>
+			<artifactId>flink-streaming-java_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
 			<scope>test</scope>
 			<type>test-jar</type>
 		</dependency>
 
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>1.10.19</version>
-			<type>jar</type>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>org.apache.flink</groupId>
-			<artifactId>flink-runtime_2.11</artifactId>
+			<artifactId>flink-runtime_${scala.binary.version}</artifactId>
 			<version>${flink.version}</version>
 			<scope>test</scope>
 			<type>test-jar</type>
@@ -200,6 +179,14 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -293,56 +280,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<quiet>true</quiet>
-					<additionalparam>-Xdoclint:none</additionalparam>
-				</configuration>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
-				<executions>
-
-					<!-- MBoxParser -->
-					<execution>
-						<id>MBoxParser</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-
-						<configuration>
-							<classifier>MBoxParser</classifier>
-
-							<archive>
-								<manifestEntries>
-									<main-class>com.dataartisans.flinktraining.dataset_preparation.MBoxParser</main-class>
-								</manifestEntries>
-							</archive>
-
-							<includes>
-								<include>**/MBoxParser.class</include>
-								<include>**/MBoxParser$*.class</include>
-							</includes>
-						</configuration>
-					</execution>
-
-				</executions>
-			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -372,7 +309,7 @@
 					<numUnapprovedLicenses>0</numUnapprovedLicenses>
 					<licenses>
 						<!-- Enforce this license:
-							Copyright 2015 data Artisans GmbH
+							Copyright 2019 Ververica GmbH
 
 							Licensed under the Apache License, Version 2.0 (the "License");
 							you may not use this file except in compliance with the License.
@@ -391,7 +328,7 @@
 							<licenseFamilyName>Apache License 2.0</licenseFamilyName>
 							<notes />
 							<patterns>
-								<pattern>Copyright 2015 data Artisans GmbH</pattern>
+								<pattern>Copyright 2019 Ververica GmbH</pattern>
 								<pattern>Licensed under the Apache License, Version 2.0 (the "License");</pattern>
 							</patterns>
 						</license>
@@ -596,46 +533,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>release</id>
-			<build>
-				<plugins>
-					<!-- disable the exclusion rules -->
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-shade-plugin</artifactId>
-						<version>2.4.1</version>
-						<executions>
-							<execution>
-								<phase>package</phase>
-								<goals>
-									<goal>shade</goal>
-								</goals>
-								<configuration>
-									<artifactSet>
-										<excludes combine.self="override"></excludes>
-									</artifactSet>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.5</version>
-						<executions>
-							<execution>
-								<id>sign-artifacts</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 </project>
